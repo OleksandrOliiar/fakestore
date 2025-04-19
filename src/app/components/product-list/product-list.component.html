@@ -36,7 +36,7 @@
   <!-- Products grid -->
   <div *ngIf="!loading && !error" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
     <div *ngFor="let product of products" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-      <div class="relative pb-[100%] bg-gray-100">
+      <div class="relative pb-[100%] bg-gray-100 cursor-pointer" [routerLink]="['/product', product.id]">
         <img 
           [src]="product.image" 
           [alt]="product.title" 
@@ -46,7 +46,11 @@
       
       <div class="p-4">
         <div class="flex justify-between items-start mb-2">
-          <h2 class="text-lg font-semibold text-gray-800 line-clamp-2 h-14" [title]="product.title">{{ product.title }}</h2>
+          <h2 class="text-lg font-semibold text-gray-800 line-clamp-2 h-14 cursor-pointer hover:text-blue-600" 
+              [title]="product.title"
+              [routerLink]="['/product', product.id]">
+            {{ product.title }}
+          </h2>
         </div>
         
         <div class="flex justify-between items-center mb-3">
@@ -61,9 +65,17 @@
         
         <div class="flex justify-between items-center">
           <span class="px-2 py-1 bg-gray-100 text-xs rounded-full text-gray-600">{{ product.category }}</span>
-          <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
-            Add to Cart
-          </button>
+          <div>
+            <button 
+              class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors mr-2">
+              Add to Cart
+            </button>
+            <button 
+              [routerLink]="['/product', product.id]"
+              class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-2 rounded-md text-sm font-medium transition-colors">
+              View
+            </button>
+          </div>
         </div>
       </div>
     </div>
