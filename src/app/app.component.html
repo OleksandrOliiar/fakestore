@@ -47,11 +47,57 @@
             <span class="text-2xl font-bold text-gray-800">FakeStore</span>
           </div>
           <div class="flex items-center space-x-4">
-            <button class="p-2 text-gray-600 hover:text-gray-900">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </button>
+            <!-- Search button and input -->
+            <div class="relative">
+              <button 
+                (click)="toggleSearchInput($event)" 
+                class="p-2 text-gray-600 hover:text-gray-900"
+                [class.bg-gray-100]="showSearchInput"
+                [class.rounded-full]="showSearchInput"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </button>
+              
+              <!-- Search input -->
+              <div 
+                *ngIf="showSearchInput" 
+                #searchContainer
+                class="absolute right-0 top-full mt-2 bg-white shadow-lg rounded-lg p-3 w-64 z-10 border border-gray-200"
+                (click)="$event.stopPropagation()"
+              >
+                <div class="flex items-center">
+                  <input 
+                    type="text" 
+                    [(ngModel)]="searchTerm" 
+                    placeholder="Search products..."
+                    class="flex-grow px-2 py-[5px] border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    (input)="onSearchInput()"
+                    (keyup.enter)="search()"
+                  >
+                  <button 
+                    (click)="search()" 
+                    class="bg-blue-500 text-white p-2 rounded-r-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </button>
+                </div>
+                <div *ngIf="searchTerm" class="flex justify-between mt-2 text-sm">
+                  <span class="text-gray-600">Searching for: "{{ searchTerm }}"</span>
+                  <button 
+                    (click)="clearSearch()" 
+                    class="text-red-500 hover:text-red-700 focus:outline-none"
+                  >
+                    Clear
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Cart button -->
             <button class="relative p-2 text-gray-600 hover:text-gray-900">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
