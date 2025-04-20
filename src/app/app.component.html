@@ -47,8 +47,8 @@
             <span class="text-2xl font-bold text-gray-800">FakeStore</span>
           </div>
           <div class="flex items-center space-x-4">
-            <!-- Search button and input -->
-            <div class="relative">
+            <!-- Search button and input - only visible on home page -->
+            <div class="relative" *ngIf="router.url === '/' || router.url === '/products'">
               <button 
                 (click)="toggleSearchInput($event)" 
                 class="p-2 text-gray-600 hover:text-gray-900 cursor-pointer"
@@ -97,13 +97,36 @@
               </div>
             </div>
             
-            <!-- Cart button -->
-            <button class="relative p-2 text-gray-600 hover:text-gray-900">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-              </svg>
-              <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-blue-500 rounded-full">0</span>
-            </button>
+            <!-- Conditional authentication buttons -->
+            <ng-container *ngIf="authService.isLoggedIn(); else loginButton">
+              <!-- Cart button - only visible when logged in -->
+              <button class="relative p-2 text-gray-600 hover:text-gray-900">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-blue-500 rounded-full">0</span>
+              </button>
+              
+              <!-- Logout button with text instead of icon -->
+              <button 
+                (click)="authService.logout()" 
+                class="bg-blue-600 hover:bg-blue-700 cursor-pointer text-white px-4 py-2 rounded-md text-sm font-medium"
+                [routerLink]="['/']"
+              >
+                Sign Out
+              </button>
+            </ng-container>
+            
+            <!-- Login button template - only visible when not logged in -->
+            <ng-template #loginButton>
+              <button 
+                class="bg-blue-600 cursor-pointer hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+                [routerLink]="['/login']"
+                *ngIf="router.url !== '/login'"
+              >
+                Sign In
+              </button>
+            </ng-template>
           </div>
         </div>
       </div>

@@ -3,6 +3,7 @@ import { RouterOutlet, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SearchService } from './services/search.service';
+import { AuthService } from './services/auth.service';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
@@ -23,7 +24,8 @@ export class AppComponent {
 
   constructor(
     private searchService: SearchService,
-    private router: Router
+    public router: Router,
+    public authService: AuthService
   ) {
     // Setup debounced search
     this.searchSubject.pipe(
