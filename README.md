@@ -1,8 +1,9 @@
 # FakeStore E-commerce Application
 
-A modern e-commerce web application built with Angular, showcasing a responsive design and essential online shopping features. This project demonstrates Angular capabilities for building interactive web applications while integrating with the [FakeStore API](https://fakestoreapi.com/).
+## View Site:
+_https://fakestore-ecru.vercel.app/_
 
-![FakeStore Demo](https://fakestoreapi.com/icons/logo.png)
+A modern e-commerce web application built with Angular, showcasing a responsive design and essential online shopping features. This project demonstrates Angular capabilities for building interactive web applications while integrating with the [FakeStore API](https://fakestoreapi.com/)
 
 ## Features
 
