@@ -144,7 +144,8 @@
           >
           <button
             *ngIf="authService.isLoggedIn()"
-            class="bg-blue-500 cursor-pointer hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors "
+            class="bg-blue-500 cursor-pointer hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+            (click)="addToCart(product)"
           >
             Add to Cart
           </button>

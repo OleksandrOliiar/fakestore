@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { ProductService, Product } from '../../services/product.service';
 import { SearchService } from '../../services/search.service';
 import { AuthService } from '../../services/auth.service';
+import { CartService } from '../../services/cart.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -27,7 +28,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
   constructor(
     private productService: ProductService,
     public searchService: SearchService,
-    public authService: AuthService
+    public authService: AuthService,
+    private cartService: CartService
   ) { }
 
   ngOnInit(): void {
@@ -107,5 +109,11 @@ export class ProductListComponent implements OnInit, OnDestroy {
       product.description.toLowerCase().includes(searchTermLower) ||
       product.category.toLowerCase().includes(searchTermLower)
     );
+  }
+
+  // Add to cart method
+  addToCart(product: Product): void {
+    this.cartService.addToCart(product, 1);
+    // Optionally show a notification or open the cart
   }
 } 
