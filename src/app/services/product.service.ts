@@ -15,6 +15,8 @@ export interface Product {
   };
 }
 
+export type SortOrder = 'asc' | 'desc';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,8 +25,8 @@ export class ProductService {
 
   constructor(private http: HttpClient) { }
 
-  getAllProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.apiUrl}/products`);
+  getAllProducts(sortOrder: SortOrder = 'asc'): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.apiUrl}/products?sort=${sortOrder}`);
   }
 
   getProduct(id: number): Observable<Product> {
@@ -35,7 +37,7 @@ export class ProductService {
     return this.http.get<string[]>(`${this.apiUrl}/products/categories`);
   }
 
-  getProductsByCategory(category: string): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.apiUrl}/products/category/${category}`);
+  getProductsByCategory(category: string, sortOrder: SortOrder = 'asc'): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.apiUrl}/products/category/${category}?sort=${sortOrder}`);
   }
 } 

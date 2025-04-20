@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ProductService, Product } from '../../services/product.service';
+import { ProductService, Product, SortOrder } from '../../services/product.service';
 import { SearchService } from '../../services/search.service';
 import { AuthService } from '../../services/auth.service';
 import { CartService } from '../../services/cart.service';
@@ -19,6 +19,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   filteredProducts: Product[] = [];
   categories: string[] = [];
   selectedCategory: string | null = null;
+  currentSortOrder: SortOrder = 'asc';
   loading: boolean = true;
   error: string | null = null;
   searchTerm: string = '';
@@ -53,7 +54,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.loading = true;
     
     if (category) {
-      this.productService.getProductsByCategory(category).subscribe({
+      this.productService.getProductsByCategory(category, this.currentSortOrder).subscribe({
         next: (data) => {
           this.allProducts = data;
           this.filterProducts();
@@ -66,7 +67,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
         }
       });
     } else {
-      this.productService.getAllProducts().subscribe({
+      this.productService.getAllProducts(this.currentSortOrder).subscribe({
         next: (data) => {
           this.allProducts = data;
           this.filterProducts();
@@ -95,6 +96,17 @@ export class ProductListComponent implements OnInit, OnDestroy {
   selectCategory(category: string | null): void {
     this.selectedCategory = category;
     this.loadProducts(category);
+  }
+
+  toggleSortOrder(): void {
+    this.currentSortOrder = this.currentSortOrder === 'asc' ? 'desc' : 'asc';
+    this.loadProducts(this.selectedCategory);
+  }
+
+  getSortIcon(): string {
+    return this.currentSortOrder === 'asc' 
+      ? 'M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12'  // Arrow up icon
+      : 'M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4'; // Arrow down icon
   }
 
   filterProducts(): void {
