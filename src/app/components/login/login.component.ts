@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -13,8 +14,14 @@ import { RouterModule } from '@angular/router';
 export class LoginComponent {
   loginForm: FormGroup;
   submitted = false;
+  loading = false;
+  error = '';
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(6)]]
@@ -26,16 +33,31 @@ export class LoginComponent {
 
   onSubmit() {
     this.submitted = true;
+    this.error = '';
 
     // Stop here if form is invalid
     if (this.loginForm.invalid) {
       return;
     }
 
-    // Form is valid - would normally dispatch login action here
-    console.log('LOGIN FORM', this.loginForm.value);
-    
-    // Reset form
-    this.submitted = false;
+    this.loading = true;
+
+    // Make API call to login
+    this.authService.login(this.loginForm.value).subscribe({
+      next: (response) => {
+        // Success - Save token to localStorage
+        localStorage.setItem('token', response.token);
+        
+        // Redirect to main page
+        this.router.navigate(['/']);
+        this.loading = false;
+      },
+      error: (err) => {
+        // Handle error
+        console.error('Login error:', err);
+        this.error = 'Invalid username or password. Please try again.';
+        this.loading = false;
+      }
+    });
   }
 } 
